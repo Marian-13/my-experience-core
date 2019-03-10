@@ -47,4 +47,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # React-Rails is a flexible tool to use React with Rails
-gem 'react-rails'
+gem 'react-rails', '~> 2.4.7'

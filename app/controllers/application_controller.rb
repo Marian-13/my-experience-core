@@ -8,6 +8,6 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user_is_logged_in?
-    true
+    false
   end
 end

@@ -3,7 +3,16 @@ require('turbolinks').start();
 require('@rails/activestorage').start();
 require('channels');
 
-var componentRequireContext = require.context('components', true);
+var frontContext = require.context('front', true);
+
 var ReactRailsUJS = require('react_ujs');
 
-ReactRailsUJS.useContext(componentRequireContext);
+ReactRailsUJS.useContext(frontContext);
+
+function importAll (r) {
+  console.log(r.keys());
+
+  r.keys().forEach(r);
+}
+
+importAll(require.context('front', true, /^\.\/(front|common)\/.*\.(jsx)/));

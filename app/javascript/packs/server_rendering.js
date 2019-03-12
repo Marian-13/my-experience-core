@@ -1,4 +1,5 @@
-var componentRequireContext = require.context("components", true);
-var ReactRailsUJS = require("react_ujs");
+var frontContext = require.context('front', true);
 
-ReactRailsUJS.useContext(componentRequireContext);
+var ReactRailsUJS = require('react_ujs');
+
+ReactRailsUJS.useContext(frontContext);

@@ -1,10 +1,8 @@
 class ApplicationController < ActionController::Base
   def index
-    if current_user_is_logged_in?
-      render component: 'Front', locals: { app_name: 'front' }
-    else
-      render component: 'Landing', locals: { app_name: 'landing' }
-    end
+    app_name = current_user_is_logged_in? ? 'front' : 'landing'
+
+    render component: "#{app_name}/App", locals: { app_name: app_name }
   end
 
   private

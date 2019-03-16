@@ -4,6 +4,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.1'
 
+# bcrypt-ruby is a Ruby binding for the OpenBSD bcrypt() password hashing algorithm
+gem 'bcrypt', '~> 3.1.7'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.1', require: false
 

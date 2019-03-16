@@ -64,3 +64,4 @@ Look at `log/production.log` if something goes wrong.
 - Dissalow `--force` on `master`
 - Use CDN in production?
 - Fonts?
+- Remove HACK for controller specs !!!!!!

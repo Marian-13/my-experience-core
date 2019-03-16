@@ -59,3 +59,20 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+# HACK remove it after updating `rspec-rails` to 4.0
+# https://github.com/rails/rails/issues/35417
+# https://github.com/rspec/rspec-rails/pull/2089
+module RSpec
+  module Rails
+    module ViewRendering
+      class EmptyTemplateHandler
+        def self.call(_template, _source = nil)
+          ::Rails.logger.info("  Template rendering was prevented by rspec-rails. Use `render_views` to verify rendered view contents if necessary.")
+
+          %("")
+        end
+      end
+    end
+  end
+end

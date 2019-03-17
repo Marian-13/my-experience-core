@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  # GET '/'
   def index
     app_name = current_user_is_logged_in? ? 'front' : 'landing'
 

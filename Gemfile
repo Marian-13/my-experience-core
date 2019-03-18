@@ -28,7 +28,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.0.beta2'
+gem 'rails', '~> 6.0.0.beta3'
 
 # React-Rails is a flexible tool to use React with Rails
 gem 'react-rails', '~> 2.4.7'

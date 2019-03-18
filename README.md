@@ -73,3 +73,4 @@ Do not forget to set `config.token_secret_signature_key = -> { Rails.application
 - Use CDN in production?
 - Fonts?
 - Remove HACK for controller specs !!!!!!
+- Remove HACK for autoloading Knock::Authenticable

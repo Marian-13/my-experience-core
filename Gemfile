@@ -16,6 +16,9 @@ gem 'byebug', group: [:development, :test], platforms: [:mri, :mingw, :x64_mingw
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 
+# Seamless JWT authentication for Rails API
+gem 'knock', '~> 2.1'
+
 gem 'listen', '>= 3.0.5', '< 3.2', group: :development
 
 # Use postgresql as the database for Active Record

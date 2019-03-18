@@ -53,6 +53,14 @@ Look at `log/production.log` if something goes wrong.
 
 `$ rails generate react:install`
 
+##### Command used to setup `knock`
+
+```
+$ rails generate knock:install
+$ rails generate knock:token_controller user
+```
+Do not forget to set `config.token_secret_signature_key = -> { Rails.application.credentials.fetch(:secret_key_base) }` in `config/initializers/knock.rb`
+
 ##### TODO
 
 - Remove `turbolinks`?

@@ -63,6 +63,8 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 end
 
+require 'rspec/json_expectations'
+
 # HACK remove it after updating `rspec-rails` to 4.0
 # https://github.com/rails/rails/issues/35417
 # https://github.com/rspec/rspec-rails/pull/2089

@@ -36,8 +36,11 @@ gem 'rails', '~> 6.0.0.beta3'
 # React-Rails is a flexible tool to use React with Rails
 gem 'react-rails', '~> 2.4.7'
 
+# Set of matchers and helpers to allow you test your APIs responses like a pro.
+gem 'rspec-json_expectations', '~> 2.1.0', group: :test
+
 # rspec-rails brings the RSpec testing framework to Ruby on Rails as a drop-in alternative to its default testing framework, Minitest
-gem 'rspec-rails', '~> 3.8'
+gem 'rspec-rails', '~> 3.8', group: [:development, :test]
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

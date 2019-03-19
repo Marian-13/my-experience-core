@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
   def index
     app_name = current_user ? 'front' : 'landing'
 
+    byebug if current_user
+
     render component: "#{app_name}/App", locals: { app_name: app_name }
   end
 end

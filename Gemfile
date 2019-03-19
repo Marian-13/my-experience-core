@@ -13,6 +13,9 @@ gem 'bootsnap', '>= 1.4.1', require: false
 # Call 'byebug' anywhere in the code to stop execution and get a debugger console
 gem 'byebug', group: [:development, :test], platforms: [:mri, :mingw, :x64_mingw]
 
+# factory_bot is a fixtures replacement with a straightforward definition syntax
+gem 'factory_bot_rails', '~> 5.0.1', group: [:development, :test]
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 

@@ -1,7 +1,6 @@
 #### What is `my-experience`?
 
 From technical perspective `my-experience` is a full-stack Rails application with React frontend (later simply `front`).
-In order to disallow access to `front` code for unathenticated users, `front` was splitted into two separate React apps: `landing` and actually `front`.
 
 #### How to see, which files are included in bundle?
 

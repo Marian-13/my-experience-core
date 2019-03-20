@@ -4,6 +4,7 @@ import axios from 'axios';
 import {
   Button,
   Card,
+  Icon,
   Input,
   Row,
   Toast
@@ -41,10 +42,14 @@ export default class LoginForm extends React.Component {
     return (
       <Card>
         <Row>
-          <h5 className="center-align">Log in to <i>My Experience</i></h5>
+          <h5 className="center-align">
+            Log in to <i>My Experience</i>
+          </h5>
           <Input type="email" label="Email" s={12} onChange={this.handleEmailChange} />
           <Input type="password" label="password" s={12} onChange={this.handlePasswordChange} />
-          <Button waves='light' s={12} onClick={this.handleLogin}>Log in</Button>
+          <Button waves='light' type="submit" s={12} onClick={this.handleLogin}>
+            Log in <Icon right>send</Icon>
+          </Button>
         </Row>
       </Card>
     );

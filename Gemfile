@@ -27,6 +27,12 @@ gem 'listen', '>= 3.0.5', '< 3.2', group: :development
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 
+# Pry Doc is a plugin for Pry. It provides extended documentation support for Pry.
+gem 'pry-doc', group: :development
+
+# This is a small gem which causes rails console to open pry.
+gem 'pry-rails', group: :development
+
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 

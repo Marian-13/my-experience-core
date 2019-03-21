@@ -9,6 +9,9 @@ import {
   Toast
 } from 'react-materialize';
 
+import { storeToken } from '../../lib/auth';
+import client from '../../api/OwnClient';
+
 export default class LoginForm extends React.Component {
   state = {
     email: '',
@@ -27,13 +30,13 @@ export default class LoginForm extends React.Component {
     const { email, password } = this.state;
     const data = { auth: { email, password } };
 
-    axios.post('/user_token', data)
-      .then((response) => {
-        const jsend = response.data;
-        const token = jsend.data.token;
+    client
+      .post('/user_token', data)
+      .then(({ data }) => {
+        storeAuthToken(data.token);
       })
-      .catch((error) => {
-        M.toast({ html: 'Invalid email and/or password.' })
+      .catch(() => {
+        M.toast({ html: 'Invalid email and/or password.' });
       });
   }
 

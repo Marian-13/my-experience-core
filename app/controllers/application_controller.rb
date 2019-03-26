@@ -1,6 +1,5 @@
-class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::API
   # GET '/'
   def index
-    render component: 'App', locals: { app_name: 'front' }
   end
 end

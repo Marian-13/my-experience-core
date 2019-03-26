@@ -2,6 +2,20 @@
 
 From technical perspective `my-experience` is a full-stack Rails application with React frontend (later simply `front`).
 
+#### Format for json responses
+
+JSend +
+1. Keys of `data` have no nesting
+2. Own error codes
+
+[Link](https://github.com/omniti-labs/jsend)
+
+#### Backed Urls
+
+REST as Rails suggests + Additional POSTs for specific actions
+
+[Link, view images](https://edgeguides.rubyonrails.org/routing.html)
+
 #### How to see, which files are included in bundle?
 
 1. Open `app/javascript/packs/front.js` (or `app/javascript/packs/landing.js`, or both)

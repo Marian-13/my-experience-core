@@ -42,28 +42,13 @@ gem 'rack-cors', '~> 1.0.3', group: :development
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0.beta3'
 
-# React-Rails is a flexible tool to use React with Rails
-gem 'react-rails', '~> 2.4.7'
-
 # Set of matchers and helpers to allow you test your APIs responses like a pro.
 gem 'rspec-json_expectations', '~> 2.1.0', group: :test
 
 # rspec-rails brings the RSpec testing framework to Ruby on Rails as a drop-in alternative to its default testing framework, Minitest
 gem 'rspec-rails', '~> 3.8', group: [:development, :test]
 
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring', group: :development
 
 gem 'spring-watcher-listen', '~> 2.0.0', group: :development
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-# Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-gem 'web-console', '>= 3.3.0', group: :development
-
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '>= 4.0.0.rc.3'

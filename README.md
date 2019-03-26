@@ -2,6 +2,14 @@
 
 From technical perspective `my-experience-core` is almost api-only Rails application (later simply `core`).
 
+#### How to build front
+
+```
+$ cd ~/Projects/my-experience-front/
+$ yarn build
+$ cp -r build/ ~/Projects/my-experience-core/public/
+```
+
 #### Format for json responses
 
 JSend +
@@ -62,3 +70,4 @@ Do not forget to set `config.token_secret_signature_key = -> { Rails.application
 - Remove HACK for controller specs !!!!!!
 - Remove HACK for autoloading Knock::Authenticable
 - Structure of/for error codes
+- Sanitation of rendering `front`

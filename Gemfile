@@ -36,6 +36,9 @@ gem 'pry-rails', group: :development
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 
+# Rack::Cors provides support for Cross-Origin Resource Sharing (CORS) for Rack compatible web applications.
+gem 'rack-cors', '~> 1.0.3', group: :development
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0.beta3'
 

@@ -88,3 +88,4 @@ Do not forget to set `config.token_secret_signature_key = -> { Rails.application
 - Remove HACK for controller specs !!!!!!
 - Remove HACK for autoloading Knock::Authenticable
 - Structure of/for error codes
+- MIGRATE fron full-stack to api-only

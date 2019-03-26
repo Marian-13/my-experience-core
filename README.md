@@ -1,6 +1,6 @@
-#### What is `my-experience`?
+#### What is `my-experience-core`?
 
-From technical perspective `my-experience` is a full-stack Rails application with React frontend (later simply `front`).
+From technical perspective `my-experience-core` is almost api-only Rails application (later simply `core`).
 
 #### Format for json responses
 

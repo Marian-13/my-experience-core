@@ -1,0 +1,297 @@
+require 'rails_helper'
+
+RSpec.describe FrontFile do
+  describe '::entry_point' do
+    it 'returns `front` SPA entry point (index.html)' do
+      front_file = FrontFile.entry_point
+
+      expect(front_file.entry_point?).to be_truthy
+    end
+  end
+
+  describe '#filename' do
+    it 'returns filename' do
+      front_file = FrontFile.new(filename: 'index', format: 'html')
+
+      expect(front_file.filename).to eq('index')
+    end
+
+    context 'when format is blank?' do
+      it 'returns empty string' do
+        front_file = FrontFile.new(filename: nil, format: 'html')
+
+        expect(front_file.filename).to eq('')
+      end
+    end
+  end
+
+  describe '#format' do
+    it 'returns format' do
+      front_file = FrontFile.new(filename: 'index', format: 'html')
+
+      expect(front_file.format).to eq('html')
+    end
+
+    context 'when format is blank?' do
+      it 'returns empty string' do
+        front_file = FrontFile.new(filename: 'index', format: nil)
+
+        expect(front_file.format).to eq('')
+      end
+    end
+  end
+
+  describe '#valid?' do
+    context 'when front file is entry point, favicon, valid_css_file or valid_js_file' do
+      it 'returns truthy value' do
+        expect(FrontFile.new(filename: 'index', format: 'html').valid?).to be_truthy
+        expect(FrontFile.new(filename: 'favicon', format: 'ico').valid?).to be_truthy
+        expect(FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk', format: 'css')).to be_truthy
+        expect(FrontFile.new(filename: 'static/js/2.2f5d7006.chunk', format: 'js').valid?).to be_truthy
+      end
+    end
+
+    context 'and front file is NOT entry point, favicon, valid_css_file or valid_js_file' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/js/2.2f5d7006.chunk.js', format: 'map')
+
+        expect(front_file.valid?).to be_falsey
+      end
+    end
+  end
+
+  describe '#entry_point?' do
+    context 'when path is "index.html"' do
+      it 'returns truthy value' do
+        front_file = FrontFile.new(filename: 'index', format: 'html')
+
+        expect(front_file.entry_point?).to be_truthy
+      end
+    end
+
+    context 'when path is NOT "index.html"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'favicon', format: 'ico')
+
+        expect(front_file.entry_point?).to be_falsey
+      end
+    end
+  end
+
+  describe '#favicon?' do
+    context 'when path is "favicon.ico"' do
+      it 'returns truthy value' do
+        front_file = FrontFile.new(filename: 'favicon', format: 'ico')
+
+        expect(front_file.favicon?).to be_truthy
+      end
+    end
+
+    context 'when path is NOT "favicon.ico"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'index', format: 'html')
+
+        expect(front_file.favicon?).to be_falsey
+      end
+    end
+  end
+
+  describe '#css_file?' do
+    context 'when front file does NOT have possible filename' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/css/../../2.8d86fe7e.chunk.css', format: 'css')
+
+        expect(front_file.css_file?).to be_falsey
+      end
+    end
+
+    context 'when filename does NOT start with "static/css/"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: '2.8d86fe7e.chunk.css', format: 'css')
+
+        expect(front_file.css_file?).to be_falsey
+      end
+    end
+
+    context 'when format is NOT "css"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk.css', format: 'js')
+
+        expect(front_file.css_file?).to be_falsey
+      end
+    end
+
+    context 'when front file has possible filename which starts with "static/css/" and format is "css"' do
+      it 'returns truthy value' do
+        front_file = FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk.css', format: 'css')
+
+        expect(front_file.css_file?).to be_truthy
+      end
+    end
+  end
+
+  describe '#js_file?' do
+    context 'when front file does NOT have possible filename' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/js/../../2.2f5d7006.chunk.js', format: 'js')
+
+        expect(front_file.js_file?).to be_falsey
+      end
+    end
+
+    context 'when filename does NOT start with "static/js/"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: '2.2f5d7006.chunk', format: 'js')
+
+        expect(front_file.js_file?).to be_falsey
+      end
+    end
+
+    context 'when format is NOT "js"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/js/2.2f5d7006.chunk', format: 'css')
+
+        expect(front_file.js_file?).to be_falsey
+      end
+    end
+
+    context 'when front file has possible filename which starts with "static/js/" and format is "js"' do
+      it 'returns truthy value' do
+        front_file = FrontFile.new(filename: 'static/js/2.2f5d7006.chunk', format: 'js')
+
+        expect(front_file.js_file?).to be_truthy
+      end
+    end
+  end
+
+  describe '#has_possible_filename?' do
+    context 'when filename is blank' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: '', format: 'js')
+
+        expect(front_file.has_possible_filename?).to be_falsey
+      end
+    end
+
+    context 'when filename is present' do
+      context 'when filename includes ".."' do
+        it 'returns falsey value' do
+          front_file = FrontFile.new(filename: '../../.ssh/id_rsa', format: 'pub')
+
+          expect(front_file.has_possible_filename?).to be_falsey
+        end
+      end
+
+      context 'when filename exludes ".."' do
+        it 'returns truthy value' do
+          front_file = FrontFile.new(filename: 'index', format: 'html')
+
+          expect(front_file.has_possible_filename?).to be_truthy
+        end
+      end
+    end
+  end
+
+  describe '#has_allowed_format?' do
+    context 'and format is NOT "html", "css", "js" or "ico"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'index', format: 'map')
+
+        expect(front_file.has_allowed_format?).to be_falsey
+      end
+    end
+
+    context 'when format is "html", "css", "js" or "ico"' do
+      it 'returns falsey value' do
+        expect(FrontFile.new(filename: 'index', format: 'html').has_allowed_format?).to be_truthy
+        expect(FrontFile.new(filename: 'index', format: 'css').has_allowed_format?).to be_truthy
+        expect(FrontFile.new(filename: 'index', format: 'js').has_allowed_format?).to be_truthy
+        expect(FrontFile.new(filename: 'index', format: 'ico').has_allowed_format?).to be_truthy
+      end
+    end
+  end
+
+  describe '#exist?' do
+    context 'when front file does NOT have possible filename' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: '../../.ssh/id_rsa', format: 'pub')
+
+        expect(front_file.exist?).to be_falsey
+      end
+    end
+
+    context 'when front file does NOT have allowed format' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'experiences', format: '')
+
+        expect(front_file.exist?).to be_falsey
+      end
+    end
+
+    context 'when front file has possible filename and allowed format' do
+      context 'when file with path exists in OS' do
+        it 'returns truthy value' do
+          front_file = FrontFile.new(filename: 'index', format: 'html')
+
+          expect(front_file.exist?).to be_truthy
+        end
+      end
+
+      context 'when file with path does not exist in OS' do
+        it 'returns falsey value' do
+          front_file = FrontFile.new(filename: 'main', format: 'html')
+
+          expect(front_file.exist?).to be_falsey
+        end
+      end
+    end
+  end
+
+  describe '#path' do
+    context 'when front file does NOT have possible filename' do
+      it 'returns empty string' do
+        front_file = FrontFile.new(filename: '', format: 'css')
+
+        expect(front_file.path).to eq('')
+      end
+    end
+
+    context 'when front file has NOT allowed format' do
+      it 'returns empty string' do
+        front_file = FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk', format: '')
+
+        expect(front_file.path).to eq('')
+      end
+    end
+
+    it 'returns path as filename and format joined by dot' do
+      front_file = FrontFile.new(filename: 'index', format: 'html')
+
+      expect(front_file.path).to eq('index.html')
+    end
+  end
+
+  describe '#absolute_path' do
+    context 'when front file has NOT possible filename' do
+      it 'returns empty string' do
+        front_file = FrontFile.new(filename: '', format: 'css')
+
+        expect(front_file.absolute_path).to eq('')
+      end
+    end
+
+    context 'when front file has NOT allowed format' do
+      it 'returns empty string' do
+        front_file = FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk', format: '')
+
+        expect(front_file.absolute_path).to eq('')
+      end
+    end
+
+    it 'returns absolute path as `core` root + `/public/build` + path' do
+      front_file = FrontFile.new(filename: 'index', format: 'html')
+
+      expect(front_file.absolute_path).to eq(Rails.root.join('public/build/index.html').to_s)
+    end
+  end
+end

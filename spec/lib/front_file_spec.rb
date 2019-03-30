@@ -42,20 +42,36 @@ RSpec.describe FrontFile do
   end
 
   describe '#valid?' do
-    context 'when front file is entry point, favicon, valid_css_file or valid_js_file' do
+    context 'when front file is entry point, favicon, css file or js file' do
       it 'returns truthy value' do
         expect(FrontFile.new(filename: 'index', format: 'html').valid?).to be_truthy
         expect(FrontFile.new(filename: 'favicon', format: 'ico').valid?).to be_truthy
-        expect(FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk', format: 'css')).to be_truthy
+        expect(FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk', format: 'css').valid?).to be_truthy
         expect(FrontFile.new(filename: 'static/js/2.2f5d7006.chunk', format: 'js').valid?).to be_truthy
       end
     end
 
-    context 'and front file is NOT entry point, favicon, valid_css_file or valid_js_file' do
+    context 'when front file is NOT entry point, favicon, css file or js file' do
       it 'returns falsey value' do
         front_file = FrontFile.new(filename: 'static/js/2.2f5d7006.chunk.js', format: 'map')
 
         expect(front_file.valid?).to be_falsey
+      end
+    end
+
+    context 'when front file is css map file or js map file' do
+      context 'and source maps are allowed' do
+        it 'returns truthy value' do
+          expect(FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk.css', format: 'map', allow_source_maps: true).valid?).to be_truthy
+          expect(FrontFile.new(filename: 'static/js/2.2f5d7006.chunk.js', format: 'map', allow_source_maps: true).valid?).to be_truthy
+        end
+      end
+
+      context 'and source maps are NOT allowed' do
+        it 'returns falsey value' do
+          expect(FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk.css', format: 'map').valid?).to be_falsey
+          expect(FrontFile.new(filename: 'static/js/2.2f5d7006.chunk.js', format: 'map').valid?).to be_falsey
+        end
       end
     end
   end
@@ -164,6 +180,90 @@ RSpec.describe FrontFile do
     end
   end
 
+  describe '#css_map_file?' do
+    context 'when front file does NOT have possible filename' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/../../css/2.8d86fe7e.chunk.css', format: 'map')
+
+        expect(front_file.css_map_file?).to be_falsey
+      end
+    end
+
+    context 'when filename does NOT start with "static/css/"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: '2.8d86fe7e.chunk.css', format: 'map')
+
+        expect(front_file.css_map_file?).to be_falsey
+      end
+    end
+
+    context 'when filename does NOT end with "css"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: '2.8d86fe7e.chunk.js', format: 'map')
+
+        expect(front_file.css_map_file?).to be_falsey
+      end
+    end
+
+    context 'when format is NOT "map"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk.css', format: 'css')
+
+        expect(front_file.css_map_file?).to be_falsey
+      end
+    end
+
+    context 'when front file has possible filename which starts with "static/css/", ends with "css" and format is "map"' do
+      it 'returns truthy value' do
+        front_file = FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk.css', format: 'map')
+
+        expect(front_file.css_map_file?).to be_truthy
+      end
+    end
+  end
+
+  describe '#js_map_file?' do
+    context 'when front file does NOT have possible filename' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/js/../../2.2f5d7006.chunk.js', format: 'map')
+
+        expect(front_file.js_map_file?).to be_falsey
+      end
+    end
+
+    context 'when filename does NOT start with "static/js/"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: '2.2f5d7006.chunk.js', format: 'map')
+
+        expect(front_file.js_map_file?).to be_falsey
+      end
+    end
+
+    context 'when filename does NOT end with "js"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: '2.2f5d7006.chunk.css', format: 'map')
+
+        expect(front_file.js_map_file?).to be_falsey
+      end
+    end
+
+    context 'when format is NOT "map"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: '2.2f5d7006.chunk.js', format: 'js')
+
+        expect(front_file.js_map_file?).to be_falsey
+      end
+    end
+
+    context 'when front file has possible filename which starts with "static/js/", ends with "js" and format is "map"' do
+      it 'returns truthy value' do
+        front_file = FrontFile.new(filename: 'static/js/2.2f5d7006.chunk.js', format: 'map')
+
+        expect(front_file.js_map_file?).to be_truthy
+      end
+    end
+  end
+
   describe '#has_possible_filename?' do
     context 'when filename is blank' do
       it 'returns falsey value' do
@@ -207,6 +307,20 @@ RSpec.describe FrontFile do
         expect(FrontFile.new(filename: 'index', format: 'css').has_allowed_format?).to be_truthy
         expect(FrontFile.new(filename: 'index', format: 'js').has_allowed_format?).to be_truthy
         expect(FrontFile.new(filename: 'index', format: 'ico').has_allowed_format?).to be_truthy
+      end
+    end
+
+    context 'when format is map' do
+      context 'and source maps are allowed' do
+        it 'returns truthy value' do
+          expect(FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk.css', format: 'map', allow_source_maps: true).has_allowed_format?).to be_truthy
+        end
+      end
+
+      context 'and source maps are NOT allowed' do
+        it 'returns falsey value' do
+          expect(FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk.css', format: 'map').has_allowed_format?).to be_falsey
+        end
       end
     end
   end

@@ -9,7 +9,7 @@ class ApplicationController < ActionController::API
     return render_front_file(FrontFile.entry_point) if params[:format].blank?
     return render_front_file(FrontFile.entry_point) if params[:format] == 'html'
 
-    front_file = FrontFile.new(filename: params[:filename], format: params[:format])
+    front_file = FrontFile.new(filename: params[:filename], format: params[:format], allow_source_maps: true)
 
     return render_not_found unless front_file.valid?
     return render_not_found unless front_file.exist?
@@ -26,6 +26,7 @@ class ApplicationController < ActionController::API
       when 'css'  then 'text/css'
       when 'js'   then 'application/javascript'
       when 'ico'  then 'image/x-icon'
+      when 'map'  then 'application/json'
       end
 
     send_file front_file.absolute_path, type: content_type, disposition: 'inline'

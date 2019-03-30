@@ -1,7 +1,9 @@
 class FrontFile
-  def initialize(filename:, format:)
+  def initialize(filename:, format:, allow_source_maps: false)
     @filename = filename
     @format   = format
+
+    @allow_source_maps = allow_source_maps
   end
 
   def self.entry_point
@@ -17,7 +19,7 @@ class FrontFile
   end
 
   def valid?
-    entry_point? || favicon? || css_file? || js_file?
+    entry_point? || favicon? || css_file? || js_file? || (source_maps_allowed? && (css_map_file? || js_map_file?))
   end
 
   def entry_point?
@@ -36,12 +38,20 @@ class FrontFile
     has_possible_filename? && filename.start_with?('static/js/') && format == 'js'
   end
 
+  def css_map_file?
+    has_possible_filename? && filename.start_with?('static/css/') && filename.end_with?('css') && format == 'map'
+  end
+
+  def js_map_file?
+    has_possible_filename? && filename.start_with?('static/js/') && filename.end_with?('js') && format == 'map'
+  end
+
   def has_possible_filename?
     filename.present? && filename.exclude?('..')
   end
 
   def has_allowed_format?
-    format.in?(['html', 'css', 'js', 'ico'])
+    format.in?(['html', 'css', 'js', 'ico']) || (source_maps_allowed? && format == 'map')
   end
 
   def exist?
@@ -60,5 +70,11 @@ class FrontFile
     return '' if !has_possible_filename? || !has_allowed_format?
 
     Rails.root.join('public', 'build', path).to_s
+  end
+
+  private
+
+  def source_maps_allowed?
+    @allow_source_maps
   end
 end

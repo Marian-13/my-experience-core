@@ -67,6 +67,18 @@ RSpec.describe ApplicationController, type: :controller do
             expect(response.content_type).to eq('image/x-icon')
           end
         end
+
+        context 'and source maps are allowed' do
+          context 'and format is "map"' do
+            it 'sets content_type to "application/json"' do
+              # FrontFile.with_configs(allow_source_maps: true) do
+                get :public, params: { filename: 'static/js/2.2f5d7006.chunk.js', format: 'map' }
+
+                expect(response.content_type).to eq('application/json')
+              # end
+            end
+          end
+        end
       end
 
       context 'and requested `front` file does NOT exist' do
@@ -80,7 +92,7 @@ RSpec.describe ApplicationController, type: :controller do
 
     context 'when requested `front` file is NOT valid' do
       it 'renders `front` SPA entry point' do
-        get :public, params: { filename: 'static/css/2.8d86fe7e.chunk.css', format: 'map' }
+        get :public, params: { filename: 'main', format: 'css' }
 
         expect(response).to have_http_status(:not_found)
       end

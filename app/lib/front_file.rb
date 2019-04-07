@@ -1,4 +1,8 @@
 class FrontFile
+  PUBLIC_FOLDER = Dir.chdir(Rails.root.join('public', 'build')) do
+    Dir.glob('**/*').select { |entry| File.file?(entry) }
+  end
+
   def initialize(filename:, format:, allow_source_maps: false)
     @filename = filename
     @format   = format
@@ -19,6 +23,10 @@ class FrontFile
   end
 
   def valid?
+    possible? && exist?
+  end
+
+  def possible?
     entry_point? || favicon? || css_file? || js_file? || (source_maps_allowed? && (css_map_file? || js_map_file?))
   end
 
@@ -57,7 +65,7 @@ class FrontFile
   def exist?
     return false if !has_possible_filename? || !has_allowed_format?
 
-    File.exist?(absolute_path)
+    PUBLIC_FOLDER.include?(path)
   end
 
   def path

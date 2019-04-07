@@ -71,3 +71,7 @@ Do not forget to set `config.token_secret_signature_key = -> { Rails.application
 - Remove HACK for autoloading Knock::Authenticable
 - Structure of/for error codes
 - Sanitation of rendering `front`
+- Global Config allow_source_maps for FrontFile
+get configuration (Thread.current[:configutaion] or Configuration)
+- env variables !!!
+- api request does not recognized

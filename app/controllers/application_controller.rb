@@ -12,7 +12,6 @@ class ApplicationController < ActionController::API
     front_file = FrontFile.new(filename: params[:filename], format: params[:format], allow_source_maps: true)
 
     return render_not_found unless front_file.valid?
-    return render_not_found unless front_file.exist?
 
     render_front_file(front_file)
   end

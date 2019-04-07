@@ -42,7 +42,7 @@ RSpec.describe FrontFile do
   end
 
   describe '#valid?' do
-    context 'when front file is possible' do
+    context 'when front file is valid' do
       context 'and front file exists' do
         it 'returns truthy value' do
           front_file = FrontFile.new(filename: 'favicon', format: 'ico')
@@ -60,26 +60,28 @@ RSpec.describe FrontFile do
       end
     end
 
-    context 'when front file is NOT possible' do
+    context 'when front file is NOT valid' do
       it 'returns falsey value' do
         front_file = FrontFile.new(filename: 'static/js/2.2f5d7006.chunk.js', format: 'map')
 
-        expect(front_file.possible?).to be_falsey
+        expect(front_file.valid?).to be_falsey
       end
     end
   end
 
   describe '#possible?' do
-    context 'when front file is entry point, favicon, css file or js file' do
+    context 'when front file is entry point, favicon, manifest, css file, js file or png file' do
       it 'returns truthy value' do
         expect(FrontFile.new(filename: 'index', format: 'html').possible?).to be_truthy
         expect(FrontFile.new(filename: 'favicon', format: 'ico').possible?).to be_truthy
+        expect(FrontFile.new(filename: 'manifest', format: 'json').possible?).to be_truthy
         expect(FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk', format: 'css').possible?).to be_truthy
         expect(FrontFile.new(filename: 'static/js/2.2f5d7006.chunk', format: 'js').possible?).to be_truthy
+        expect(FrontFile.new(filename: 'static/media/logo.39e717c5.png', format: 'png').possible?).to be_truthy
       end
     end
 
-    context 'when front file is NOT entry point, favicon, css file or js file' do
+    context 'when front file is NOT entry point, favicon, manifest, css file or js file' do
       it 'returns falsey value' do
         front_file = FrontFile.new(filename: 'static/js/2.2f5d7006.chunk.js', format: 'map')
 
@@ -136,6 +138,24 @@ RSpec.describe FrontFile do
         front_file = FrontFile.new(filename: 'index', format: 'html')
 
         expect(front_file.favicon?).to be_falsey
+      end
+    end
+  end
+
+  describe '#manifest?' do
+    context 'when path is "manifest.json"' do
+      it 'returns truthy value' do
+        front_file = FrontFile.new(filename: 'manifest', format: 'json')
+
+        expect(front_file.manifest?).to be_truthy
+      end
+    end
+
+    context 'when path is NOT "manifest.json"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'index', format: 'html')
+
+        expect(front_file.manifest?).to be_falsey
       end
     end
   end
@@ -292,6 +312,40 @@ RSpec.describe FrontFile do
     end
   end
 
+  describe '#png_file?' do
+    context 'when front file does NOT have possible filename' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/media/../../logo.39e717c5', format: 'png')
+
+        expect(front_file.png_file?).to be_falsey
+      end
+    end
+
+    context 'when filename does NOT start with "static/media/"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'logo.39e717c5', format: 'png')
+
+        expect(front_file.png_file?).to be_falsey
+      end
+    end
+
+    context 'when format is NOT "png"' do
+      it 'returns falsey value' do
+        front_file = FrontFile.new(filename: 'static/media/logo.39e717c5', format: 'js')
+
+        expect(front_file.png_file?).to be_falsey
+      end
+    end
+
+    context 'when front file has possible filename which starts with "static/media/" and format is "png"' do
+      it 'returns truthy value' do
+        front_file = FrontFile.new(filename: 'static/media/logo.39e717c5', format: 'png')
+
+        expect(front_file.png_file?).to be_truthy
+      end
+    end
+  end
+
   describe '#has_possible_filename?' do
     context 'when filename is blank' do
       it 'returns falsey value' do
@@ -321,7 +375,7 @@ RSpec.describe FrontFile do
   end
 
   describe '#has_allowed_format?' do
-    context 'and format is NOT "html", "css", "js" or "ico"' do
+    context 'and format is NOT "html", "css", "js", "json", "ico", or "png"' do
       it 'returns falsey value' do
         front_file = FrontFile.new(filename: 'index', format: 'map')
 
@@ -329,12 +383,14 @@ RSpec.describe FrontFile do
       end
     end
 
-    context 'when format is "html", "css", "js" or "ico"' do
-      it 'returns falsey value' do
+    context 'when format is "html", "css", "js", "json", "ico" or "png"' do
+      it 'returns truthy value' do
         expect(FrontFile.new(filename: 'index', format: 'html').has_allowed_format?).to be_truthy
         expect(FrontFile.new(filename: 'index', format: 'css').has_allowed_format?).to be_truthy
         expect(FrontFile.new(filename: 'index', format: 'js').has_allowed_format?).to be_truthy
+        expect(FrontFile.new(filename: 'index', format: 'json').has_allowed_format?).to be_truthy
         expect(FrontFile.new(filename: 'index', format: 'ico').has_allowed_format?).to be_truthy
+        expect(FrontFile.new(filename: 'index', format: 'png').has_allowed_format?).to be_truthy
       end
     end
 

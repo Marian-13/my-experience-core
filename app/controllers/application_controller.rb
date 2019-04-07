@@ -24,7 +24,9 @@ class ApplicationController < ActionController::API
       when 'html' then 'text/html'
       when 'css'  then 'text/css'
       when 'js'   then 'application/javascript'
+      when 'json' then 'application/json'
       when 'ico'  then 'image/x-icon'
+      when 'png'  then 'image/png'
       when 'map'  then 'application/json'
       end
 

@@ -59,11 +59,27 @@ RSpec.describe ApplicationController, type: :controller do
         end
       end
 
+      context 'and format is "json"' do
+        it 'sets content_type to "application/json"' do
+          get :public, params: { filename: 'manifest', format: 'json' }
+
+          expect(response.content_type).to eq('application/json')
+        end
+      end
+
       context 'and format is "ico"' do
         it 'sets content_type to "image/x-icon"' do
           get :public, params: { filename: 'favicon', format: 'ico' }
 
           expect(response.content_type).to eq('image/x-icon')
+        end
+      end
+
+      context 'and format is "png"' do
+        it 'sets content_type to "image/png"' do
+          get :public, params: { filename: 'static/media/logo.39e717c5', format: 'png' }
+
+          expect(response.content_type).to eq('image/png')
         end
       end
 

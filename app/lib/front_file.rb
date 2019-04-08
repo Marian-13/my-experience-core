@@ -52,6 +52,14 @@ class FrontFile
     Rails.root.join('public', 'build', path).to_s
   end
 
+  def content_type
+    return '' unless has_allowed_format?
+
+    return 'application/json' if format == 'map'
+
+    Mime::Type.lookup_by_extension(format).to_s
+  end
+
   private
 
   def source_maps_allowed?

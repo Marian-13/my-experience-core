@@ -205,4 +205,38 @@ RSpec.describe FrontFile do
       expect(front_file.absolute_path).to eq(Rails.root.join('public/build/index.html').to_s)
     end
   end
+
+  describe '#content_type' do
+    context 'when front file has NOT allowed format' do
+      it 'returns empty string' do
+        front_file = FrontFile.new(filename: 'static/css/2.8d86fe7e.chunk', format: '')
+
+        expect(front_file.content_type).to eq('')
+      end
+    end
+
+    context 'when front file format is valid Mime Type extension' do
+      it 'returns content type' do
+        front_file = FrontFile.new(filename: 'index', format: 'html')
+
+        expect(front_file.content_type).to eq('text/html')
+      end
+    end
+
+    context 'when front file format is NOT valid Mime Type extension' do
+      it 'returns empty string' do
+        front_file = FrontFile.new(filename: 'index', format: 'hello')
+
+        expect(front_file.content_type).to eq('')
+      end
+    end
+
+    context 'when front file format is "map"' do
+      it 'returns "application/json"' do
+        front_file = FrontFile.new(filename: 'static/js/2.2f5d7006.chunk.js', format: 'map', allow_source_maps: true)
+
+        expect(front_file.content_type).to eq('application/json')
+      end
+    end
+  end
 end

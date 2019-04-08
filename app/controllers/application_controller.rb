@@ -19,18 +19,7 @@ class ApplicationController < ActionController::API
   private
 
   def render_front_file(front_file)
-    content_type =
-      case front_file.format
-      when 'html' then 'text/html'
-      when 'css'  then 'text/css'
-      when 'js'   then 'application/javascript'
-      when 'json' then 'application/json'
-      when 'ico'  then 'image/x-icon'
-      when 'png'  then 'image/png'
-      when 'map'  then 'application/json'
-      end
-
-    send_file front_file.absolute_path, type: content_type, disposition: 'inline'
+    send_file front_file.absolute_path, type: front_file.content_type, disposition: 'inline'
   end
 
   def render_not_found

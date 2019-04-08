@@ -23,44 +23,7 @@ class FrontFile
   end
 
   def valid?
-    possible? && exist?
-  end
-
-  def possible?
-    entry_point? || favicon? || manifest? || css_file? || js_file? || png_file? ||
-      (source_maps_allowed? && (css_map_file? || js_map_file?))
-  end
-
-  def entry_point?
-    path == 'index.html'
-  end
-
-  def favicon?
-    path == 'favicon.ico'
-  end
-
-  def manifest?
-    path == 'manifest.json'
-  end
-
-  def css_file?
-    has_possible_filename? && filename.start_with?('static/css/') && format == 'css'
-  end
-
-  def js_file?
-    has_possible_filename? && filename.start_with?('static/js/') && format == 'js'
-  end
-
-  def css_map_file?
-    has_possible_filename? && filename.start_with?('static/css/') && filename.end_with?('css') && format == 'map'
-  end
-
-  def js_map_file?
-    has_possible_filename? && filename.start_with?('static/js/') && filename.end_with?('js') && format == 'map'
-  end
-
-  def png_file?
-    has_possible_filename? && filename.start_with?('static/media/') && format == 'png'
+    exist?
   end
 
   def has_possible_filename?

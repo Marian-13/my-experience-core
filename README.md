@@ -75,3 +75,4 @@ Do not forget to set `config.token_secret_signature_key = -> { Rails.application
 get configuration (Thread.current[:configutaion] or Configuration)
 - env variables !!!
 - api request does not recognized
+- simply allow all files from Public Folder
